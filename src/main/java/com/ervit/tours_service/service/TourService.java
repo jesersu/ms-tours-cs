@@ -1,11 +1,14 @@
 package com.ervit.tours_service.service;
 
 import com.ervit.tours_service.dto.TourRequest;
+import com.ervit.tours_service.dto.TourResponse;
 import com.ervit.tours_service.model.Tour;
 import com.ervit.tours_service.repository.TourRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,4 +29,17 @@ public class TourService {
     }
 
 
+    public List<TourResponse> getAlltours() {
+        List<Tour> products = tourRepository.findAll();
+        return products.stream().map(this::mapToTourResponse).toList();
+    }
+
+    private TourResponse mapToTourResponse(Tour tour) {
+        return TourResponse.builder()
+                .id(tour.getId())
+                .name(tour.getName())
+                .description(tour.getDescription())
+                .price(tour.getPrice())
+                .build();
+    }
 }
